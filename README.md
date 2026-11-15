@@ -1,8 +1,8 @@
-# 🎬 CinePulse – Full-Stack Movie Ticket Booking System
+# CinePulse – Full-Stack Movie Ticket Booking System
 
 CinePulse is a full-stack movie ticket booking web application designed to provide users with a convenient platform to explore movies, select seats, and manage their bookings through an interactive interface.
 
-## ✨ Features
+## Features
 
 - **User Authentication:** User registration and login with password hashing and JWT-based authentication.
 - **Movie Browsing:** Explore available movies through a movie listing interface.
