@@ -1,0 +1,1 @@
+The uploaded CinePulse files reference images in this folder (movie posters, food photos, payment logos, and offer banners), but those image files were not included with the three uploaded files. Copy your original images/ folder here to restore them. The site and backend APIs work without those assets, but images will be missing until copied.

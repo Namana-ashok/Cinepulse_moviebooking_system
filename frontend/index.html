@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CinePulse – Book Movie Tickets</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet"/>
+  <!-- Stylesheet (split out) -->
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- ════════════════ NAV ════════════════ -->
+<nav>
+  <div class="logo">Cine<span>Pulse</span></div>
+  <ul class="nav-links">
+    <li>
+  <a href="#" onclick="scrollToMovies()">
+    Movies
+  </a>
+</li>
+   <li>
+  <a href="#" onclick="showPage('cinemas')">
+    Cinemas
+  </a>
+</li>
+    <li>
+  <a href="#" onclick="scrollToOffers()">
+    Offers
+  </a>
+</li>
+  </ul>
+  <div class="nav-actions">
+   <div class="profile-dropdown-wrap">
+
+  <button class="btn-nav"
+          id="navProfileBtn"
+          onclick="showPage('signin')">
+
+    Sign In
+
+  </button>
+
+  <!-- DROPDOWN -->
+
+  <div class="profile-dropdown"
+       id="profileDropdown">
+
+    <div class="dropdown-item" onclick="openAccountSettings()">
+  ⚙️ Account & Settings
+</div>
+
+    <div class="dropdown-item">
+      📤 Share
+    </div>
+
+    <div class="dropdown-item">
+      📄 Terms & Conditions
+    </div>
+
+    <div class="dropdown-item">
+      🔒 Privacy Policy
+    </div>
+
+    <div class="dropdown-item">
+      🎁 Offers
+    </div>
+
+    <div class="dropdown-item">
+      ⭐ Rate Us
+    </div>
+        <div class="dropdown-item" onclick="logoutUser()">
+      🚪 Logout
+    </div>
+
+  </div>
+
+</div>
+  </div>
+</nav>
+
+<!-- ════════════════ PAGE: HOME ════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">🎬 Now Showing · May 2026</div>
+      <h1 class="hero-title">Book Your<br><em>Perfect</em><br>Seat.</h1>
+      <p class="hero-sub">
+        Skip the queue. Browse movies, pick your seat, and confirm in under
+        60 seconds — anytime, anywhere.
+      </p>
+      <div class="hero-actions">
+
+  <button class="btn-primary"
+          onclick="scrollToMovies()">
+    Browse Movies
+  </button>
+
+  <button class="btn-outline"
+          onclick="scrollToOffers()">
+    View Offers
+  </button>
+
+  <button class="btn-outline"
+          onclick="scrollToFood()">
+    Order Food
+  </button>
+
+</div>
+      </div>
+      <!-- HERO MOVIE COLLAGE -->
+
+<div class="hero-collage">
+
+  <img src="images/kalki.jpg.jpeg"
+       class="collage-img img1">
+
+  <img src="images/pushpa2.jpg.jpeg"
+       class="collage-img img2">
+
+  <img src="images/devara.jpg.jpeg"
+       class="collage-img img3">
+
+  <img src="images/stree2.jpg.jpeg"
+       class="collage-img img4">
+
+</div>
+    
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input
+  type="search"
+  id="searchInput"
+  name="q-search-movies"
+  placeholder="Search movies, theaters, cities…"
+  autocomplete="new-password"
+  autocorrect="off"
+  autocapitalize="off"
+  spellcheck="false"
+  readonly
+  onfocus="this.removeAttribute('readonly');"
+/>
+      <div class="search-divider"></div>
+      <select class="search-filter"
+        style="background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.85rem;cursor:pointer;outline:none;">
+        <option>All Cities</option>
+        <option>Bengaluru</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+        <option>Chennai</option>
+      </select>
+      <button class="search-btn" onclick="doSearch()">Search</button>
+    </div>
+  </section>
+
+  <!-- Movies Grid -->
+  <div class="movies-section">
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Now <span>Showing</span></h2>
+        <span class="section-link" onclick="scrollToMovies()">View All →</span>
+      </div>
+      <!-- Cards injected by renderMovies() in JS -->
+      <div class="movies-grid" id="moviesGrid"></div>
+    </section>
+  </div>
+  <!-- ════════════════ FOOD SECTION ════════════════ -->
+<section class="food-section">
+
+  <div class="section-header">
+    <h2 class="section-title">
+      Food & <span>Beverages</span>
+    </h2>
+    <div class="food-cart-summary">
+      
+
+  🍿 Items:
+  <span id="foodCount">0</span>
+
+  &nbsp; | &nbsp;
+
+  ₹<span id="foodTotal">0</span>
+
+</div>
+<button class="food-buy-btn"
+        onclick="buyFoodItems()">
+
+  Buy Food
+
+</button>
+
+    <span class="section-link">
+      View Menu →
+    </span>
+  </div>
+
+  <div class="food-grid">
+
+    <!-- ITEM 1 -->
+    <div class="food-card">
+
+      <img src="images/classicpopcorn.jfif.jpeg"
+           class="food-img"
+           alt="Popcorn">
+
+      <div class="food-info">
+
+        <h3>Classic Popcorn</h3>
+
+        <p>Fresh buttery popcorn combo.</p>
+
+        <div class="food-bottom">
+          <span class="food-price">₹250</span>
+
+          <button class="food-btn"
+        onclick="addFood('Classic Popcorn', 250)">
+  Add
+</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ITEM 2 -->
+    <div class="food-card">
+
+      <img src="images/burgercombo.jfif.jpeg"
+           class="food-img"
+           alt="Burger">
+
+      <div class="food-info">
+
+        <h3>Burger Combo</h3>
+
+        <p>Burger + Fries + Coke.</p>
+
+        <div class="food-bottom">
+          <span class="food-price">₹399</span>
+
+          <button class="food-btn"
+        onclick="addFood('Burger Combo', 350)">
+  Add
+</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ITEM 3 -->
+    <div class="food-card">
+
+      <img src="images/cheesenachos.jfif.jpeg"
+           class="food-img"
+           alt="Nachos">
+
+      <div class="food-info">
+
+        <h3>Cheese Nachos</h3>
+
+        <p>Loaded nachos with cheese dip.</p>
+
+        <div class="food-bottom">
+          <span class="food-price">₹299</span>
+
+          <button class="food-btn"
+        onclick="addFood('Cheese Nachos', 280)">
+  Add
+</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ITEM 4 -->
+    <div class="food-card">
+
+      <img src="images/cooldrinks.jfif.jpeg"
+           class="food-img"
+           alt="Coke">
+
+      <div class="food-info">
+
+        <h3>Cold Drinks</h3>
+
+        <p>Pepsi, Coke, Sprite available.</p>
+
+        <div class="food-bottom">
+          <span class="food-price">₹149</span>
+
+          <button class="food-btn"
+        onclick="addFood('Coke', 120)">
+  Add
+</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<!-- ════════════════ OFFERS SECTION ════════════════ -->
+<section class="offers-section">
+
+  <div class="section-header">
+    <h2 class="section-title">
+      Exclusive <span>Offers</span>
+    </h2>
+  </div>
+
+  <div class="offers-grid">
+
+  <!-- OFFER 1 -->
+  <div class="offer-card"
+       onclick="openOffer('cashback')">
+
+    <img src="images/download.png"
+         class="offer-img">
+
+    <h3>20% Cashback</h3>
+
+    <p>
+      Get instant cashback using HDFC Credit Cards.
+    </p>
+
+  </div>
+
+  <!-- OFFER 2 -->
+  <div class="offer-card"
+       onclick="openOffer('popcorn')">
+
+    <img src="images/popcorn.jfif.jpeg"
+         class="offer-img">
+
+    <h3>Free Popcorn Combo</h3>
+
+    <p>
+      Book 2 premium tickets and get combo free.
+    </p>
+
+  </div>
+
+  <!-- OFFER 3 -->
+  <div class="offer-card"
+       onclick="openOffer('student')">
+
+    <img src="images/studentoffer.png"
+         class="offer-img">
+
+    <h3>Student Discount</h3>
+
+    <p>
+      Students get flat ₹100 off on weekdays.
+    </p>
+
+  </div>
+
+  <!-- OFFER 4 -->
+  <div class="offer-card"
+       onclick="openOffer('weekend')">
+
+    <img src="images/weekendblast.jfif.jpeg"
+         class="offer-img">
+
+    <h3>Weekend Blast</h3>
+
+    <p>
+      Buy 1 Get 1 on selected theaters.
+    </p>
+
+  </div>
+
+</div>
+
+</section>
+  <footer>
+    <div class="footer-logo">Cine<span>Pulse</span></div>
+    <div>© 2026 CinePulse · All Rights Reserved.</div>
+    <div>NAIDILE A · NAMANA A</div>
+  </footer>
+</div>
+<!-- ════════════════ PAGE: CINEMAS ════════════════ -->
+
+<div id="page-cinemas" class="page">
+
+  <div class="page-header">
+
+    <button class="back-btn"
+            onclick="showPage('home')">
+      ← Back
+    </button>
+
+    <h1 class="page-title">
+      Explore Cinemas
+    </h1>
+
+  </div>
+
+  <section class="cinemas-section">
+
+    <div class="cinema-grid">
+
+      <!-- CINEMA CARD -->
+      <div class="cinema-card">
+
+        <img src="images/pvr.jpg"
+             class="cinema-img"
+             alt="PVR">
+
+        <div class="cinema-info">
+
+          <h3>PVR Cinemas</h3>
+
+          <p>Forum Mall, Bengaluru</p>
+
+          <div class="cinema-tags">
+            <span>IMAX</span>
+            <span>Dolby Atmos</span>
+            <span>4K</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CINEMA CARD -->
+      <div class="cinema-card">
+
+        <img src="images/inox.jpg"
+             class="cinema-img"
+             alt="INOX">
+
+        <div class="cinema-info">
+
+          <h3>INOX</h3>
+
+          <p>Garuda Mall, Bengaluru</p>
+
+          <div class="cinema-tags">
+            <span>MX4D</span>
+            <span>Recliner</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CINEMA CARD -->
+      <div class="cinema-card">
+
+        <img src="images/cinepolis.jpg"
+             class="cinema-img"
+             alt="Cinepolis">
+
+        <div class="cinema-info">
+
+          <h3>Cinepolis</h3>
+
+          <p>Royal Meenakshi Mall</p>
+
+          <div class="cinema-tags">
+            <span>3D</span>
+            <span>Luxury Seats</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ════════════════ PAGE: MOVIE SELECTION ════════════════ -->
+<div id="page-movie" class="page">
+  <div class="page-header">
+
+    <button class="back-btn" onclick="showPage('home')">
+  ← Back
+</button>
+
+    <div class="breadcrumb">
+      <span onclick="showPage('home')" style="cursor:pointer">Home</span>
+      / Movies / <span>Kalki 2898 AD</span>
+    </div>
+    <h1 class="page-title">Select Show &amp; Timing</h1>
+  </div>
+
+  <div class="movie-detail-layout">
+    <!-- Poster -->
+    <div>
+      <div class="movie-detail-poster">
+        <img id="detailPoster"
+     src="images/kalki.jpg.jpeg"
+     class="movie-poster-img"
+     alt="Kalki 2898 AD">
+      </div>
+    </div>
+
+    <!-- Movie Info + Showtimes -->
+    <div class="movie-detail-info">
+      <h2 class="movie-detail-title" id="detailTitle">
+  Kalki 2898 AD
+</h2>
+      <div class="movie-tags">
+
+  <span class="tag" id="detailGenre">
+    Sci-Fi
+  </span>
+
+  <span class="tag" id="detailGenre2">
+    Action
+  </span>
+
+  <span class="tag" id="detailLanguage">
+    Telugu
+  </span>
+
+  <span class="tag" id="detailFormat">
+    3D
+  </span>
+
+  <span class="tag" id="detailCertificate">
+    U/A
+  </span>
+
+  <span class="tag" id="detailDuration">
+    181 min
+  </span>
+
+</div>
+      <p class="movie-synopsis" id="detailDescription">
+        In a dystopian future blending mythology and technology, a bounty
+        hunter must navigate a world on the edge of apocalypse as the avatar
+        of Vishnu is set to appear. An epic sci-fi spectacle with stunning
+        visuals and a powerful cast.
+      </p>
+
+      <div class="showtimes-label">Choose Date &amp; Showtime</div>
+
+      <!-- Date Tabs -->
+      <div class="date-tabs">
+        <div class="date-tab active" onclick="selectDate(this)"><div class="day">Mon</div><div class="num">4</div></div>
+        <div class="date-tab"        onclick="selectDate(this)"><div class="day">Tue</div><div class="num">5</div></div>
+        <div class="date-tab"        onclick="selectDate(this)"><div class="day">Wed</div><div class="num">6</div></div>
+        <div class="date-tab"        onclick="selectDate(this)"><div class="day">Thu</div><div class="num">7</div></div>
+        <div class="date-tab"        onclick="selectDate(this)"><div class="day">Fri</div><div class="num">8</div></div>
+        <div class="date-tab"        onclick="selectDate(this)"><div class="day">Sat</div><div class="num">9</div></div>
+        <div class="date-tab"        onclick="selectDate(this)"><div class="day">Sun</div><div class="num">10</div></div>
+      </div>
+
+      <!-- Theaters & Showtimes -->
+      <div class="theaters">
+
+        <div class="theater-row">
+          <div class="theater-name">PVR Cinemas – Forum Mall, Bengaluru</div>
+          <div class="theater-meta">Dolby Atmos · 4K · Recliner Available</div>
+          <div class="showtime-btns">
+            <button class="showtime-btn"
+        onclick="selectShow(this,'10:00 AM')">
+  10:00 AM
+</button>
+            <button class="showtime-btn"
+        onclick="selectShow(this,'01:30 PM')">
+  1:30 PM
+</button>
+            <button class="showtime-btn"
+        onclick="selectShow(this,'05:00 PM')">
+  05:00 PM
+</button>
+            <button class="showtime-btn"
+        onclick="selectShow(this,'09:15 PM')">
+  09:15 PM
+</button>
+          </div>
+        </div>
+
+        <div class="theater-row">
+          <div class="theater-name">INOX – Garuda Mall, Bengaluru</div>
+          <div class="theater-meta">IMAX 3D · Standard · MX4D</div>
+          <div class="showtime-btns">
+            <button class="showtime-btn"         onclick="selectShow(this,'09:30 AM')">09:30 AM</button>
+            <button class="showtime-btn"         onclick="selectShow(this,'12:45 PM')">12:45 PM</button>
+            <button class="showtime-btn filling" onclick="selectShow(this,'04:15 PM')">04:15 PM</button>
+            <button class="showtime-btn"         onclick="selectShow(this,'08:00 PM')">08:00 PM</button>
+          </div>
+        </div>
+
+        <div class="theater-row">
+          <div class="theater-name">Cinepolis – Royal Meenakshi Mall</div>
+          <div class="theater-meta">2D · 3D Available</div>
+          <div class="showtime-btns">
+            <button class="showtime-btn" onclick="selectShow(this,'11:00 AM')">11:00 AM</button>
+            <button class="showtime-btn" onclick="selectShow(this,'03:30 PM')">03:30 PM</button>
+            <button class="showtime-btn" onclick="selectShow(this,'07:45 PM')">07:45 PM</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE: SEAT SELECTION ════════════════ -->
+<div id="page-seats" class="page">
+
+    <button class="back-btn" onclick="showPage('movie')">
+  ← Back
+</button>
+
+  <!-- Step Indicator -->
+  <div class="steps-bar">
+    <div class="step done">
+      <div class="step-dot">✓</div>
+      <div class="step-label">Movie</div>
+    </div>
+    <div class="step-line done"></div>
+    <div class="step done">
+      <div class="step-dot">✓</div>
+      <div class="step-label">Showtime</div>
+    </div>
+    <div class="step-line done"></div>
+    <div class="step active">
+      <div class="step-dot">3</div>
+      <div class="step-label">Seats</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-dot">4</div>
+      <div class="step-label">Payment</div>
+    </div>
+  </div>
+
+  <div class="seat-layout">
+    <!-- Screen -->
+    <div class="screen-display">
+      <div class="screen-bar"></div>
+      <div class="screen-label">All eyes this way — Screen</div>
+    </div>
+  <!-- ═══════ SEAT EXPERIENCE ZONES ═══════ -->
+
+<div class="zone-selector-wrap">
+
+  <div class="zone-title">
+    Choose Your Movie Atmosphere
+  </div>
+
+  <select id="zoneSelect"
+          class="zone-select"
+          onchange="changeZone()">
+
+    <option value="Silent Zone">
+      🤫 Silent Zone
+    </option>
+
+    <option value="Family Zone">
+      👨‍👩‍👧 Family Zone
+    </option>
+
+    <option value="Friends Zone">
+      🎉 Friends Zone
+    </option>
+
+  </select>
+
+  <div class="zone-note"
+       id="zoneNote">
+
+    95% users rated Silent Zone peaceful ✨
+
+  </div>
+
+</div>
+<div class="seat-zone-labels">
+
+  <div class="zone-chip silent-chip">
+    🤫 Silent Zone
+  </div>
+
+  <div class="zone-chip family-chip">
+    👨‍👩‍👧 Family Zone
+  </div>
+
+  <div class="zone-chip friends-chip">
+    🎉 Friends Zone
+  </div>
+
+</div>
+<!-- Seat Grid (injected by buildSeatGrid()) -->
+<div class="seat-grid-wrapper">
+
+  <div class="seat-grid" id="seatGrid"></div>
+
+</div>
+    
+
+    <!-- Legend -->
+    <div class="seat-legend">
+      <div class="legend-item">
+        <div class="legend-dot available"></div>
+        <div class="legend-text">Available</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot booked"></div>
+        <div class="legend-text">Booked</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot selected"></div>
+        <div class="legend-text">Selected</div>
+      </div>
+    </div>
+
+    <!-- Booking Summary -->
+    <button class="watch-party-btn"
+        onclick="openPartyPopup()">
+
+  🎉 Create Watch Party
+
+</button>
+    <div class="seat-summary">
+      <div class="party-result"
+     id="partyResult">
+
+  <h3>🎉 Watch Party Created</h3>
+
+  <p id="partyCodeText"></p>
+
+  <p id="partySeatsText"></p>
+
+</div>
+      <h3>Booking Summary</h3>
+      <div class="summary-row">
+        <span class="label">Movie</span>
+        <span class="value" id="summaryMovie">
+  Kalki 2898 AD
+</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Cinema</span>
+        <span class="value" id="summaryTheater">
+  PVR Forum Mall
+</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Date &amp; Time</span>
+        <span class="value" id="summaryDateTime">
+  Mon 4 May · 05:00 PM
+</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Selected Seats</span>
+        <span class="value" id="selectedSeatsText">None</span>
+      </div>
+     
+
+<div class="summary-row">
+  <span class="label">Zone</span>
+  <span class="value" id="summaryZone">
+  </span>
+</div>
+      <div class="summary-row">
+        <span class="label">Seat Price</span>
+        <span class="value">₹250 × <span id="seatCount">0</span></span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Convenience Fee</span>
+        <span class="value" id="convFee">₹0</span>
+      </div>
+      <div class="summary-row">
+        <span class="label" style="font-weight:700">Total</span>
+        <span class="value total" id="totalAmount">₹0</span>
+      </div>
+      <button
+        class="btn-primary"
+        style="width:100%;margin-top:1.2rem"
+        onclick="proceedToPayment()"
+        id="proceedBtn"
+        disabled
+      >Proceed to Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PAGE: PAYMENT ════════════════ -->
+<div id="page-payment" class="page">
+    <button class="back-btn" onclick="showPage('seats')">
+  ← Back
+</button>
+
+  <!-- Step Indicator -->
+  <div class="steps-bar">
+    <div class="step done"><div class="step-dot">✓</div><div class="step-label">Movie</div></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-dot">✓</div><div class="step-label">Showtime</div></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-dot">✓</div><div class="step-label">Seats</div></div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-dot">4</div><div class="step-label">Payment</div></div>
+  </div>
+
+  <div class="payment-layout">
+
+    <!-- LEFT: Payment Methods -->
+    <div class="payment-methods">
+      <div class="payment-section-title">Choose Payment Method</div>
+
+      <div class="payment-tabs">
+        <button class="payment-tab active" onclick="switchPayment('upi',this)">UPI</button>
+        <button class="payment-tab"        onclick="switchPayment('card',this)">Credit / Debit Card</button>
+        <button class="payment-tab"        onclick="switchPayment('card',this)">Net Banking</button>
+      </div>
+
+      <!-- UPI Section -->
+      <div class="upi-section visible" id="upiSection">
+        <div class="upi-apps">
+          <div class="upi-app selected" onclick="selectUpi(this)">
+           <img src="images/phonepe.png" class="pay-logo">
+<div class="upi-name">PhonePe</div>
+          </div>
+          <div class="upi-app" onclick="selectUpi(this)">
+            <img src="images/gpay.png" class="pay-logo">
+<div class="upi-name">GPay</div>
+          </div>
+          <div class="upi-app" onclick="selectUpi(this)">
+            <img src="images/paytm.png" class="pay-logo">
+<div class="upi-name">Paytm</div>
+          </div>
+          <div class="upi-app" onclick="selectUpi(this)">
+           <img src="images/bhim.png" class="pay-logo">
+<div class="upi-name">BHIM</div>
+          </div>
+        </div>
+        <div class="upi-input-wrap">
+          <div class="field-label">UPI ID</div>
+          <input class="field-input" type="text" placeholder="yourname@upi"/>
+        </div>
+      </div>
+
+      <!-- Card Section -->
+      <div class="card-section" id="cardSection">
+        <div class="upi-input-wrap">
+          <div class="field-label">Card Number</div>
+          <input class="field-input" type="text" placeholder="1234 5678 9012 3456"/>
+        </div>
+        <div class="upi-input-wrap">
+          <div class="field-label">Cardholder Name</div>
+          <input class="field-input" type="text" placeholder="Name on card"/>
+        </div>
+        <div class="field-row">
+          <div class="upi-input-wrap">
+            <div class="field-label">Expiry</div>
+            <input class="field-input" type="text" placeholder="MM / YY"/>
+          </div>
+          <div class="upi-input-wrap">
+            <div class="field-label">CVV</div>
+            <input class="field-input" type="text" placeholder="•••"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Order Summary -->
+    <div class="order-card">
+      <div class="order-card-title">Order Summary</div>
+      <div class="order-movie-row">
+        <div class="order-poster">
+         <img id="paymentPoster"
+         src=" "
+     class="order-poster-img"
+     alt="Movie Poster">
+        </div>
+        <div class="order-movie-info">
+
+  <div class="order-movie-name"
+       id="paymentMovieName">
+  </div>
+          <div class="order-movie-meta">
+
+  <span id="paymentTheater">
+    
+  </span>
+
+  <br>
+
+  <span id="paymentDateTime">
+   
+  </span>
+
+  <br>
+
+  Seats:
+  <span id="paymentSeats">—</span>
+
+</div>
+        </div>
+      </div>
+
+      <div class="order-line">
+        <span class="olabel">Ticket Price</span>
+        <span id="ticketPrice">—</span>
+      </div>
+      <div class="order-line">
+        <span class="olabel">Convenience Fee</span>
+        <span id="payConvFee">—</span>
+      </div>
+      <div class="order-line">
+        <span class="olabel">GST (9%)</span>
+        <span id="payGst">—</span>
+      </div>
+      <div class="order-line">
+  <span class="olabel">Experience Zone</span>
+  <span id="paymentZone">
+    Silent Zone
+  </span>
+</div>
+      <hr class="order-divider"/>
+      <div class="order-total">
+        <span>Total</span>
+        <span class="amount" id="payTotal">—</span>
+      </div>
+
+      <button class="btn-pay" onclick="confirmPayment()">Pay Now</button>
+      <div class="secure-note">🔒 256-bit SSL Secured Payment</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════ PAGE: CONFIRMATION ════════════════ -->
+<div id="page-confirm" class="page">
+
+    <button class="back-btn" onclick="showPage('home')">
+  ← Home
+</button>
+
+  <div class="confirmation-wrap">
+    <div>
+      <div class="ticket-card">
+        <!-- Ticket Header -->
+        <div class="ticket-header">
+          <div class="ticket-confirm-icon">✓</div>
+          <div class="ticket-confirm-label">Booking Confirmed</div>
+          <img id="confirmPoster"
+     class="confirm-poster"
+     src=""
+     alt="Movie Poster">
+          <div class="ticket-movie-name"
+     id="confirmMovieName">
+  Kalki 2898 AD
+</div>
+        </div>
+
+        <!-- Ticket Body -->
+        <div class="ticket-body">
+          <div class="ticket-row">
+            <div class="ticket-field">
+              <div class="tf-label">Cinema</div>
+              <div class="tf-value"
+     id="confirmTheater">
+  PVR Forum Mall
+</div>
+            </div>
+            <div class="ticket-field">
+              <div class="tf-label">Format</div>
+              <div class="tf-value">Dolby 3D</div>
+            </div>
+          </div>
+          <div class="ticket-row">
+            <div class="ticket-field">
+              <div class="tf-label">Date</div>
+              <div class="tf-value"
+     id="confirmDate">
+  Mon, 4 May 2026
+</div>
+            </div>
+            <div class="ticket-field">
+              <div class="tf-label">Show Time</div>
+              <div class="tf-value"
+     id="confirmTime">
+  05:00 PM
+</div>
+            </div>
+          </div>
+          <div class="ticket-row">
+
+  <div class="ticket-field">
+
+    <div class="tf-label">
+      Experience Zone
+    </div>
+
+    <div class="tf-value"
+         id="confirmZone">
+
+      Silent Zone
+
+    </div>
+
+  </div>
+
+</div>
+          <div>
+            <div class="tf-label">Seat Number(s)</div>
+            <div class="ticket-seats" id="confirmSeats">
+              <span class="ticket-seat-badge">A3</span>
+              <span class="ticket-seat-badge">B2</span>
+            </div>
+          </div>
+
+          <hr class="ticket-divider"/>
+
+          <div class="ticket-row">
+            <div class="ticket-field">
+              <div class="tf-label">Amount Paid</div>
+              <div class="tf-value" id="confirmAmount">₹577</div>
+            </div>
+            <div class="ticket-field">
+              <div class="tf-label">Payment</div>
+              <div class="tf-value">PhonePe UPI</div>
+            </div>
+          </div>
+
+          <!-- Booking ID + Barcode -->
+          <div class="booking-id-section">
+            <div>
+              <div class="booking-id-label">Booking ID</div>
+              <div class="booking-id-value" id="bookingId">CP-2026-00000</div>
+            </div>
+            <div class="barcode" id="barcode"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket Actions -->
+      <div class="ticket-actions">
+        <button class="btn-ticket btn-ticket-primary"
+        onclick="downloadTicket()">
+  Download Ticket
+</button>
+        <button class="btn-ticket btn-ticket-secondary" onclick="showPage('home')">Back to Home</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ════════════════ PAGE: SIGN IN ════════════════ -->
+
+
+<!-- ════════════════ PAGE: SIGN IN ════════════════ -->
+
+<div id="page-signin" class="page">
+
+  <div class="auth-container">
+    <div class="auth-card">
+
+      <h1 class="auth-title">Welcome Back</h1>
+
+      <p class="auth-subtitle">
+        Sign in to continue your CinePulse experience.
+      </p>
+
+      <div class="auth-form">
+
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="loginEmail"
+                 placeholder="Enter your email">
+        </div>
+
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="loginPassword"
+                 placeholder="Enter your password">
+        </div>
+
+        <button class="auth-btn" onclick="loginUser()">
+          Sign In
+        </button>
+
+        <div class="auth-footer">
+          Don't have an account?
+          <span onclick="showPage('signup')">
+            Create Account
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ════════════════ PAGE: SIGN UP ════════════════ -->
+
+<div id="page-signup" class="page">
+
+  <div class="auth-container">
+    <div class="auth-card">
+
+      <h1 class="auth-title">Create Account</h1>
+
+      <p class="auth-subtitle">
+        Join CinePulse and start booking your favorite movies.
+      </p>
+
+      <div class="auth-form">
+
+        <div class="auth-field">
+          <label>Full Name</label>
+          <input type="text" id="signupName"
+                 placeholder="Enter your full name">
+        </div>
+
+        <div class="auth-field">
+          <label>Email</label>
+          <input type="email" id="signupEmail"
+                 placeholder="Enter your email">
+        </div>
+
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="signupPassword"
+                 placeholder="Create password">
+        </div>
+
+        <div class="auth-field">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmPassword"
+                 placeholder="Confirm password">
+        </div>
+
+        <button class="auth-btn" onclick="registerUser()">
+          Create Account
+        </button>
+
+        <div class="auth-footer">
+          Already have an account?
+          <span onclick="showPage('signin')">
+            Sign In
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- PAGE: ACCOUNT -->
+<div id="page-account" class="page">
+  <button class="account-back-btn" onclick="showPage('home')">
+  ← Back to Home
+</button>
+
+  <div class="container">
+
+    <h1>Account & Settings</h1>
+    <p>Manage your CinePulse account.</p>
+
+    <div class="card">
+
+      <h2>My Profile</h2>
+
+      <p><strong>Name:</strong> <span id="accountName">Loading...</span></p>
+
+      <p><strong>Email:</strong> <span id="accountEmail">Loading...</span></p>
+
+      <button onclick="showEditProfile()">
+        Edit Profile
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <h2>Change Password</h2>
+
+      <input
+        type="password"
+        id="currentPassword"
+        placeholder="Current password"
+      >
+
+      <input
+        type="password"
+        id="newPassword"
+        placeholder="New password"
+      >
+
+      <input
+        type="password"
+        id="confirmNewPassword"
+        placeholder="Confirm new password"
+      >
+
+      <button onclick="changePassword()">
+        Update Password
+      </button>
+
+    </div>
+
+    <div id="editProfileSection" class="card" style="display:none;">
+
+      <h2>Edit Profile</h2>
+
+      <input
+        type="text"
+        id="editAccountName"
+        placeholder="Your name"
+      >
+
+      <input
+        type="email"
+        id="editAccountEmail"
+        placeholder="Your email"
+      >
+
+      <button onclick="saveProfile()">
+        Save Changes
+      </button>
+
+      <button onclick="hideEditProfile()">
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- DOWNLOAD SUCCESS POPUP -->
+
+<div id="downloadPopup" class="download-popup">
+
+  <div class="download-popup-card">
+
+    <div class="popup-icon">🎟️</div>
+
+    <h2>Ticket Downloaded!</h2>
+
+    <p>
+      Your cinematic journey is ready 🍿<br>
+      Grab your popcorn and enjoy the show!
+    </p>
+
+    <button onclick="closeDownloadPopup()">
+      Awesome!
+    </button>
+
+  </div>
+
+</div>
+<!-- SEARCH NOT FOUND -->
+
+<div id="searchPopup"
+     class="search-popup">
+
+  <div class="search-popup-card">
+
+    <div class="search-popup-icon">
+      🔍
+    </div>
+
+    <h2>Not Found</h2>
+
+    <p>
+      Sorry, we couldn't find any movies
+      or cinemas matching your search.
+    </p>
+
+    <button onclick="closeSearchPopup()">
+      OK
+    </button>
+
+  </div>
+
+</div>
+<!-- FOOD PURCHASE POPUP -->
+
+<div id="foodPopup"
+     class="download-popup">
+
+  <div class="download-popup-card">
+
+    <div class="popup-icon">
+      🍿
+    </div>
+
+    <h2>Order Confirmed!</h2>
+
+    <p id="foodPopupText">
+
+      Your snacks are getting prepared 🍔
+
+    </p>
+
+    <button onclick="closeFoodPopup()">
+
+      Enjoy the Show 🍿
+
+    </button>
+
+  </div>
+
+</div>
+<!-- ════════════════ PAGE: OFFER DETAILS ════════════════ -->
+
+<div id="page-offer" class="page">
+
+  <div class="page-header">
+
+    <button class="back-btn"
+            onclick="showPage('home')">
+
+      ← Back
+
+    </button>
+
+    <h1 class="page-title"
+        id="offerTitle">
+
+      Offer Details
+
+    </h1>
+
+  </div>
+
+  <div class="offer-detail-wrap">
+
+    <img id="offerDetailImg"
+         class="offer-detail-img">
+
+    <div class="offer-detail-content">
+
+      <h2 id="offerDetailHeading"></h2>
+
+      <p id="offerDetailText"></p>
+
+      <button class="btn-primary"
+              onclick="applyOffer()">
+
+        Apply Offer
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+<!-- ═════════ WATCH PARTY POPUP ═════════ -->
+
+<div class="party-popup"
+     id="partyPopup">
+
+  <div class="party-popup-card">
+
+    <h2>🎬 Create Watch Party</h2>
+
+    <input type="text"
+           id="partyName"
+           placeholder="Party Name">
+
+    <input type="number"
+           id="partyCount"
+           placeholder="Number of Friends">
+
+    <select id="partyZone">
+
+      <option>Silent Zone</option>
+
+      <option>Family Zone</option>
+
+      <option>Friends Zone</option>
+
+    </select>
+
+    <button onclick="createWatchParty()">
+
+      Create Party
+
+    </button>
+
+    <button class="close-party-btn"
+            onclick="closePartyPopup()">
+
+      Cancel
+
+    </button>
+
+  </div>
+
+</div>
+<!-- JavaScript (split out) -->
+<script src="script.js"></script>
+</body>
+</html>
